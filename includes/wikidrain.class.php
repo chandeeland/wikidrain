@@ -44,7 +44,7 @@ class wikidrain
      */
     public function Search($query, $numResult)
     {
-        $this->_query = htmlspecialchars($query);
+        $this->_query = urlencode($query);
         $this->_apiParams['action'] = 'opensearch';
         $this->_apiParams['params'] = array(
             "limit={$numResult}",
