@@ -9,6 +9,22 @@ PHP, or focus on simply querying data from Wikipedia.  The goal of the wikidrain
 project is to develop a production-quality PHP library dedicated to easy, simple, 
 and efficient querying of Wikipedia articles.
 
+Install:
+===================================================================================
+add to composer.json
+
+```php
+        "repositories": [
+        {
+            "type": "vcs",
+            "url" : "https://github.com/chandeeland/php-foursquare"
+        },
+        "require" : [
+            "mshanken/sql-versioning" : "dev-master@dev"
+        ]
+
+```
+
 
 Usage:
 ===================================================================================
