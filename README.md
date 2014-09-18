@@ -15,13 +15,14 @@ add to composer.json
 
 ```php
         "repositories": [
-        {
-            "type": "vcs",
-            "url" : "https://github.com/abreksa4/wikidrain"
-        },
-        "require" : [
+            {
+                "type": "vcs",
+                "url" : "https://github.com/abreksa4/wikidrain"
+            }
+        ],
+        "require" : {
             "abreksa4/wikidrain" : "dev-master@dev"
-        ]
+        }
 
 ```
 
