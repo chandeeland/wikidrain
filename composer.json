@@ -1,0 +1,24 @@
+{
+    "name": "abreksa4/wikidrain",
+        "description": "A simple PHP wrapper for the WikiMedia API centralized around querying Wikipedia articles",
+        "minimum-stability": "stable",
+        "authors": [
+        {
+            "name": "David Chan",
+            "email": "dchan@sigilsoftware.com"
+        },
+        {
+            "name": "Craig McCoy",
+            "email": "craigmccoy@gmail.com"
+        },
+        {
+            "name": "Andrew Breksa",
+            "email": "abreksa4@gmail.com"
+        }
+    ],
+        "autoload": {
+            "files": [
+                "includes/wikidrain.class.php"
+                ]
+        }
+}
