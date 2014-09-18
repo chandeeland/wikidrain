@@ -17,10 +17,10 @@ add to composer.json
         "repositories": [
         {
             "type": "vcs",
-            "url" : "https://github.com/chandeeland/php-foursquare"
+            "url" : "https://github.com/abreksa4/wikidrain"
         },
         "require" : [
-            "mshanken/sql-versioning" : "dev-master@dev"
+            "abreksa4/wikidrain" : "dev-master@dev"
         ]
 
 ```
