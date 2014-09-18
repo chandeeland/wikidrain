@@ -191,9 +191,6 @@ class wikidrain
     {
         $params = http_build_query($this->_apiParams['params']);
         $url = "{$this->_apiURL}action={$this->_apiParams['action']}&{$params}";
-
-        echo $url;
-
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
