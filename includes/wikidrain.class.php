@@ -12,7 +12,7 @@
  */
 class wikidrain
 {
-    protected $_apiURL = 'http://en.wikipedia.org/w/api.php?format=xml&';
+    protected $_apiURL = 'http://en.wikipedia.org/w/api.php?';
     protected $_apiParams = array();
     protected $_query;
     protected $_userAgent;
@@ -43,14 +43,15 @@ class wikidrain
      * @param $numResult int
      * @return array|mixed
      */
-    public function Search($query, $numResult)
+    public function Search($query, $numResult = 1)
     {
         $this->_query = urlencode($query);
         $this->_apiParams['action'] = 'opensearch';
         $this->_apiParams['params'] = array(
-            "limit={$numResult}",
-            "search={$this->_query}",
-            "suggest=false",
+            "format" => 'xml',
+            "limit"  => $numResult,
+            "search" => $this->_query,
+            "suggest",
         );
         $result = $this->callApi();
         $result = $this->parseSearch($result);
@@ -69,15 +70,40 @@ class wikidrain
     {
         $this->_apiParams['action'] = 'parse';
         $this->_apiParams['params'] = array(
-            "prop=sections",
-            "page={$this->prepTitle($title)}",
-            "redirects=true",
+            "format" => 'xml',
+            "prop" => "sections",
+            "page" => $this->prepTitle($title),
+            "redirects" => true,
         );
         $result = $this->callApi();
         $result = $this->parseSections($result);
         $this->release();
         return $result;
     }
+
+    /**
+     *
+     * Returns a multidimensional array containing alternate language info
+     *
+     * @param $title string
+     * @return array|mixed
+     */
+    public function getLanguage($title, $langcode='zh')
+    {
+        $this->_apiParams['action'] = 'query';
+        $this->_apiParams['params'] = array(
+            "format" => "json",
+            "prop" => "langlinks",
+            "titles" => $this->prepTitle($title),
+            "lllang" => $langcode,
+            "redirects" => true,
+        );
+        $result = $this->callApi();
+        $result = $this->parseLanguage($result);
+        $this->release();
+        return $result;
+    }
+
 
     /**
      *
@@ -91,17 +117,18 @@ class wikidrain
     {
         $this->_apiParams['action'] = 'query';
         $this->_apiParams['params'] = array(
-            "prop=revisions",
-            "titles={$this->prepTitle($title)}",
-            "redirects=true",
-            "rvprop=content",
-            "rvsection={$section}",
+            "prop" => "revisions",
+            "titles" => $this->prepTitle($title),
+            "redirects" => true,
+            "rvprop" => "content",
+            "rvsection" => $section,
         );
         $result = $this->callApi();
         $result = $this->parseText($result, $section);
         $this->release();
         return $result;
     }
+
 
     /**
      *
@@ -162,8 +189,11 @@ class wikidrain
      */
     private function callApi()
     {
-        $params = implode('&', $this->_apiParams['params']);
+        $params = http_build_query($this->_apiParams['params']);
         $url = "{$this->_apiURL}action={$this->_apiParams['action']}&{$params}";
+
+        echo $url;
+
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
@@ -219,6 +249,21 @@ class wikidrain
         }
         return $this->_data;
     }
+
+    /**
+     *
+     * Parses the getSections results
+     *
+     * @param $json mixed
+     * @return array
+     */
+    private function parseLanguage($json)
+    {
+        $json = json_decode($json, true);       
+        $page = end($json['query']['pages']);
+        return $page['langlinks'];
+    }
+
 
     /**
      *
